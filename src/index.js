@@ -1,3 +1,39 @@
+/** @typedef {import('csstype').Properties} CSSProperties */
+
+/**
+ * Aegle DOM structure
+ * @typedef {Object} AegleDOM
+ * @property {CSSProperties} [style] Optional element inline styles.
+ * @property {string} [src] The src attribute for img, audio or other media elements.
+ * @property {Object<string, string | AegleDOM | CSSProperties | undefined>} key
+ */
+
+/**
+ * This function generates DOM elements from a JSON object.
+ *
+ * A regular element
+ *
+ * @example ```js
+ * import { quark } from 'quark.js'
+ *
+ * document.querySelector("#element").innerHTML = quark({
+ *  "div": {
+ *    "h1": "Hello world!",
+ *  },
+ * });
+ * ```
+ *
+ *
+ * @example ```js
+ * const quarkImg = quark({
+ *  "img#example": {
+ *    src: "./example.png",
+ *  },
+ * });
+ * ```
+ * @param {Object<string, AegleDOM | string>} json The JSON object to parse as HTML
+ * @returns {HTMLElement} The DOM element generated from the JSON object.
+ */
 export function aegle(json) {
   const parseKey = (key) => {
     const attributes = {};
