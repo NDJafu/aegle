@@ -1,8 +1,10 @@
-name: Aegle CI
+name: Publish
 on:
   push:
     branches:
-      - "**"
+      - "main"
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
   build:
@@ -18,11 +20,10 @@ jobs:
       - name: Installing deps
         run: pnpm install --frozen-lockfile
 
-      - name: Biome check & formatting
-        run: pnpm run check && pnpm run format
-
-      - name: Dist build
-        run: pnpm run build
-
-      - name: Testing & Coverage
-        run: pnpm run test
+      - name: Create release pr or publish
+        id: changesets
+        uses: changesets/action@v1
+        with:
+          publish: pnpm run build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

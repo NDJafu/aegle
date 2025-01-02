@@ -1,13 +1,17 @@
 {
   "compilerOptions": {
+    "emitDeclarationOnly": false,
+    "declaration": true,
     "target": "es2021",
     "module": "CommonJS",
     "strict": true,
     "newLine": "LF",
     "esModuleInterop": true,
     "skipLibCheck": true,
+    "allowJs": true,
     "forceConsistentCasingInFileNames": true,
     "outDir": "dist"
   },
-  "exclude": ["node_modules"]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "tests"]
 }

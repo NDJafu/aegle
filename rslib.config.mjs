@@ -1,4 +1,4 @@
-import { defineConfig } from "@rslib/core";
+import { defineConfig } from '@rslib/core';
 
 export default defineConfig({
   lib: [
@@ -7,12 +7,12 @@ export default defineConfig({
         bundle: false,
         build: true,
       },
-      format: "esm",
-      syntax: "es2021",
+      format: 'esm',
+      syntax: 'es2021',
     },
     {
-      format: "cjs",
-      syntax: "es2021",
+      format: 'cjs',
+      syntax: 'es2021',
     },
   ],
   output: {

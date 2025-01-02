@@ -4,6 +4,10 @@
   "version": "0.0.1-alpha",
   "description": "An small Javascript library to create user interfaces in JSON.",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NDJafu/aegle"
+  },
   "type": "module",
   "keywords": [
     "aegle",
@@ -24,14 +28,12 @@
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "scripts": {
     "build": "rslib build",
     "check": "biome check --write",
     "dev": "rslib build --watch",
-    "publish": "pnpm run package:release",
+    "publish": "pnpm run build && pnpm run package:release",
     "package:release": "changeset publish",
     "format": "biome format --write",
     "test": "vitest run"
@@ -39,6 +41,7 @@
   "devDependencies": {
     "@biomejs/biome": "^1.9.3",
     "@changesets/cli": "^2.27.11",
+    "@microsoft/api-extractor": "^7.48.1",
     "@rslib/core": "^0.2.2",
     "csstype": "^3.1.3",
     "jsdom": "^25.0.1",
