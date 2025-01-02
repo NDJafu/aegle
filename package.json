@@ -18,6 +18,7 @@
     "lightweight",
     "json"
   ],
+  "private": false,
   "exports": {
     ".": {
       "import": "./dist/index.js",
