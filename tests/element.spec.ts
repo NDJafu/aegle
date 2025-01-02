@@ -20,4 +20,17 @@ describe('Create components', () => {
 
     expect(node.innerHTML).toBe('');
   });
+
+  test('nesting elements', () => {
+    const node = aegle({
+      div: { div: 'Hi!' },
+    });
+
+    const expectedNode = document.createElement('div');
+    const childNode = document.createElement('div');
+    childNode.innerHTML = 'Hi!';
+    expectedNode.appendChild(childNode);
+
+    expect(node.outerHTML).toBe(expectedNode.outerHTML);
+  });
 });
