@@ -1,0 +1,28 @@
+name: Aegle CI
+on:
+  push:
+    branches:
+      - "**"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3.0.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: "pnpm"
+
+      - name: Installing deps
+        run: pnpm install --frozen-lockfile
+
+      - name: Biome check & formatting
+        run: pnpm run check && pnpm run format
+
+      - name: Dist build
+        run: pnpm run build
+
+      - name: Testing & Coverage
+        run: pnpm run test
