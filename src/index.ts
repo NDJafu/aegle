@@ -1,9 +1,9 @@
 import type * as CSS from 'csstype';
 
-interface AegleDOM {
+interface AegleDom {
   style?: CSS.Properties;
   src?: string;
-  [key: string]: string | AegleDOM | CSS.Properties | undefined;
+  [key: string]: string | AegleDom | CSS.Properties | undefined;
 }
 
 /**
@@ -32,7 +32,9 @@ interface AegleDOM {
  * @param json The JSON object to parse as HTML
  * @returns The DOM element generated from the JSON object.
  */
-export function aegle(json: Record<string, AegleDOM | string>): HTMLElement {
+export function aegle(
+  json: Record<string, AegleDom | string | CSS.Properties | undefined>,
+): HTMLElement {
   const parseKey = (key: string) => {
     const attributes: Record<string, string> = {};
     const regexAttr = /\[([^\]]+)=["']?([^\]"']+)["']?\]/g;
@@ -68,7 +70,7 @@ export function aegle(json: Record<string, AegleDOM | string>): HTMLElement {
 
   const createElement = (
     key: string,
-    value: string | AegleDOM,
+    value: string | AegleDom | CSS.Properties | undefined,
   ): HTMLElement => {
     const { tag = 'div', attributes } = parseKey(key);
     const element = document.createElement(tag);
@@ -80,19 +82,17 @@ export function aegle(json: Record<string, AegleDOM | string>): HTMLElement {
     if (typeof value === 'string') {
       element.textContent = value;
     } else if (typeof value === 'object') {
-      if (value.style) {
+      if ('style' in value) {
         Object.assign(element.style, value.style);
       }
 
-      if (value.src && element instanceof HTMLMediaElement) {
-        element.src = value.src;
+      if ('src' in value && element instanceof HTMLMediaElement) {
+        element.src = value.src ?? '';
       }
 
       for (const [childKey, childValue] of Object.entries(value)) {
         if (!['style', 'src'].includes(childKey)) {
-          element.appendChild(
-            createElement(childKey, childValue as typeof value),
-          );
+          element.appendChild(createElement(childKey, childValue));
         }
       }
     }

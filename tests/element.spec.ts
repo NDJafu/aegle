@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { aegle } from '../src/index.js';
+import { aegle } from '../src/index.ts';
 
 describe('Create components', () => {
   test('create simple component', () => {
