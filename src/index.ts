@@ -1,12 +1,10 @@
-/** @typedef {import('csstype').Properties} CSSProperties */
+import type * as CSS from 'csstype';
 
-/**
- * Aegle DOM structure
- * @typedef {Object} AegleDOM
- * @property {CSSProperties} [style] Optional element inline styles.
- * @property {string} [src] The src attribute for img, audio or other media elements.
- * @property {Object<string, string | AegleDOM | CSSProperties | undefined>} key
- */
+interface AegleDOM {
+  style?: CSS.Properties;
+  src?: string;
+  [key: string]: string | AegleDOM | CSS.Properties | undefined;
+}
 
 /**
  * This function generates DOM elements from a JSON object.
@@ -14,9 +12,9 @@
  * A regular element
  *
  * @example ```js
- * import { quark } from 'quark.js'
+ * import { aegle } from 'aegle-js'
  *
- * document.querySelector("#element").innerHTML = quark({
+ * document.querySelector("#element").innerHTML = aegle({
  *  "div": {
  *    "h1": "Hello world!",
  *  },
@@ -25,18 +23,18 @@
  *
  *
  * @example ```js
- * const quarkImg = quark({
+ * const aegleImg = aegle({
  *  "img#example": {
  *    src: "./example.png",
  *  },
  * });
  * ```
- * @param {Object<string, AegleDOM | string>} json The JSON object to parse as HTML
- * @returns {HTMLElement} The DOM element generated from the JSON object.
+ * @param json The JSON object to parse as HTML
+ * @returns The DOM element generated from the JSON object.
  */
-export function aegle(json) {
-  const parseKey = (key) => {
-    const attributes = {};
+export function aegle(json: Record<string, AegleDOM | string>): HTMLElement {
+  const parseKey = (key: string) => {
+    const attributes: Record<string, string> = {};
     const regexAttr = /\[([^\]]+)=["']?([^\]"']+)["']?\]/g;
     const regexParts =
       /^(?<tag>[a-z]+\d?)?(?<id>#\w+)?(?<classes>(\.\w+|-\w+)*)?(?<attrs>(\[.*\])*)$/i;
@@ -47,7 +45,7 @@ export function aegle(json) {
       throw new Error(`Invalid element format: ${key}`);
     }
 
-    const { tag, id, classes, attrs } = match.groups;
+    const { tag, id, classes, attrs } = match.groups ?? {};
 
     if (id) {
       attributes.id = id.slice(1);
@@ -68,7 +66,10 @@ export function aegle(json) {
     return { tag, attributes };
   };
 
-  const createElement = (key, value) => {
+  const createElement = (
+    key: string,
+    value: string | AegleDOM,
+  ): HTMLElement => {
     const { tag = 'div', attributes } = parseKey(key);
     const element = document.createElement(tag);
 
@@ -83,13 +84,15 @@ export function aegle(json) {
         Object.assign(element.style, value.style);
       }
 
-      if (value.src && ['img', 'audio'].includes(tag)) {
+      if (value.src && element instanceof HTMLMediaElement) {
         element.src = value.src;
       }
 
       for (const [childKey, childValue] of Object.entries(value)) {
         if (!['style', 'src'].includes(childKey)) {
-          element.appendChild(createElement(childKey, childValue));
+          element.appendChild(
+            createElement(childKey, childValue as typeof value),
+          );
         }
       }
     }
