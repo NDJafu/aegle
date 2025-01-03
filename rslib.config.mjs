@@ -8,14 +8,23 @@ export default defineConfig({
         build: true,
       },
       format: 'esm',
-      syntax: 'es2021',
+      output: {
+        distPath: {
+          root: './dist/esm',
+        },
+      },
     },
     {
       format: 'cjs',
-      syntax: 'es2021',
+      output: {
+        distPath: {
+          root: './dist/cjs',
+        },
+      },
     },
   ],
   output: {
+    target: 'web',
     minify: {
       jsOptions: {
         minimizerOptions: {

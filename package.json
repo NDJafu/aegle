@@ -1,7 +1,7 @@
 {
   "name": "aegle-js",
   "author": "NDJafu",
-  "version": "0.0.7-alpha",
+  "version": "0.0.8-alpha",
   "description": "An small Javascript library to create user interfaces in JSON.",
   "license": "MIT",
   "repository": {
@@ -21,14 +21,14 @@
   "private": false,
   "exports": {
     ".": {
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs",
-      "types": "./dist/index.d.ts"
+      "require": "./dist/esm/index.cjs",
+      "import": "./dist/esm/index.js",
+      "types": "./dist/esm/index.d.ts"
     }
   },
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./dist/cjs/index.cjs",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/esm/index.d.ts",
   "files": ["dist"],
   "scripts": {
     "build": "rslib build",
