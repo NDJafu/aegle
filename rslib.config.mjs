@@ -25,13 +25,5 @@ export default defineConfig({
   ],
   output: {
     target: 'web',
-    minify: {
-      jsOptions: {
-        minimizerOptions: {
-          mangle: true,
-          compress: true,
-        },
-      },
-    },
   },
 });

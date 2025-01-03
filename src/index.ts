@@ -43,11 +43,11 @@ export function aegle(
 
     const match = key.match(regexParts);
 
-    if (!match) {
+    if (!match || !match.groups) {
       throw new Error(`Invalid element format: ${key}`);
     }
 
-    const { tag, id, classes, attrs } = match.groups ?? {};
+    const { tag, id, classes, attrs } = match.groups;
 
     if (id) {
       attributes.id = id.slice(1);
