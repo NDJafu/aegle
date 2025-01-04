@@ -1,7 +1,7 @@
 {
   "name": "aegle-js",
   "author": "NDJafu",
-  "version": "0.0.9-alpha",
+  "version": "0.0.10-alpha",
   "description": "An small Javascript library to create user interfaces in JSON.",
   "license": "MIT",
   "repository": {
@@ -28,7 +28,7 @@
   },
   "main": "./dist/esm/index.js",
   "types": "./dist/esm/index.d.ts",
-  "files": ["dist"],
+  "files": ["dist/**/**", "!**/*.spec.*", "!**/*.tsbuildinfo"],
   "scripts": {
     "build": "rslib build",
     "check": "biome check --write",
@@ -48,9 +48,6 @@
     "jsdom": "^25.0.1",
     "typescript": "^5.7.2",
     "vitest": "^2.1.8"
-  },
-  "engines": {
-    "pnpm": ">=8.8.0"
   },
   "packageManager": "pnpm@8.8.0"
 }

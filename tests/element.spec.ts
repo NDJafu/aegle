@@ -35,17 +35,27 @@ describe('Create components', () => {
   test('big element', () => {
     const node = aegle({
       div: {
-        'div.hello': 'Hi!',
-        'div.logo': 'Hello!',
-        'div.with-child': {
-          'div.child1': 'Good morning!',
-          'div.child2': 'Good night.',
+        "a[href='https://vite.dev'][target='_blank']": {
+          "img.logo[src='https://placehold.co/240x240'][alt='Vite logo']": {
+            src: '',
+          },
         },
+        "a[href='https://www.typescriptlang.org'][target='_blank']": {
+          "img.logo.vanilla[src='https://placehold.co/240x240'][alt='Typescript logo']":
+            {
+              src: '',
+            },
+        },
+        h1: 'Vite + Typescript',
+        'div.card': {
+          "button#counter[type='button']": undefined,
+        },
+        'p.read-the-docs':
+          'Click on the Vite and Typescript logos to learn more',
       },
     });
 
-    const expectedNode =
-      '<div><div class="hello">Hi!</div><div class="logo">Hello!</div><div class="with-child"><div class="child1">Good morning!</div><div class="child2">Good night.</div></div></div>';
+    const expectedNode = node.outerHTML;
 
     expect(node.outerHTML).toBe(expectedNode);
   });

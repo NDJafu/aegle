@@ -3,10 +3,7 @@ import { defineConfig } from '@rslib/core';
 export default defineConfig({
   lib: [
     {
-      dts: {
-        bundle: false,
-        build: true,
-      },
+      dts: true,
       format: 'esm',
       output: {
         distPath: {
@@ -25,5 +22,13 @@ export default defineConfig({
   ],
   output: {
     target: 'web',
+    minify: {
+      jsOptions: {
+        minimizerOptions: {
+          mangle: true,
+          compress: true,
+        },
+      },
+    },
   },
 });

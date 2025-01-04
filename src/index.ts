@@ -1,8 +1,3 @@
-interface AegleDom {
-  src?: string;
-  [key: string]: string | AegleDom | undefined;
-}
-
 /**
  * This function generates DOM elements from a JSON object.
  *
@@ -32,10 +27,8 @@ interface AegleDom {
  * @param json The JSON object to parse as HTML
  * @returns The DOM element generated from the JSON object.
  */
-export function aegle(
-  json: Record<string, AegleDom | string | undefined>,
-): HTMLElement {
-  const parseKey = (key: string) => {
+export function aegle(json: object): HTMLElement {
+  function getTagAndAttributes(key: string) {
     const attributes: Record<string, string> = {};
     const regexAttr = /\[([^\]]+)=["']?([^\]"']+)["']?\]/g;
     const regexParts =
@@ -43,57 +36,51 @@ export function aegle(
 
     const match = key.match(regexParts);
 
-    if (!match || !match.groups) {
-      throw new Error(`Invalid element format: ${key}`);
-    }
-
-    const { tag, id, classes, attrs } = match.groups;
+    const { tag, classes, id, attrs } = match?.groups ?? {};
 
     if (id) {
       attributes.id = id.slice(1);
     }
 
     if (classes) {
-      attributes.class = classes.replace(/\./g, ' ').trim();
+      const classNames = classes.replace(/\./g, ' ').trim();
+      attributes.class = classNames;
     }
 
-    if (attrs) {
-      const attrMatch = regexAttr.exec(attrs);
-      while (attrMatch !== null) {
-        const [, attr, value] = attrMatch;
-        attributes[attr] = value;
-      }
+    let attrMatch = regexAttr.exec(attrs);
+    while (attrMatch !== null) {
+      const [, attr, value] = attrMatch;
+      attributes[attr] = value;
+      attrMatch = regexAttr.exec(attrs);
     }
 
     return { tag, attributes };
-  };
+  }
 
-  const createElement = (
-    key: string,
-    value: string | AegleDom | undefined,
-  ): HTMLElement => {
-    const { tag, attributes } = parseKey(key);
+  function createElement(parent: string, children: object | string) {
+    const { tag, attributes } = getTagAndAttributes(parent);
     const element = document.createElement(tag);
 
-    for (const [attr, val] of Object.entries(attributes)) {
-      element.setAttribute(attr, val.trim());
+    for (const [attribute, value] of Object.entries(attributes)) {
+      element.setAttribute(attribute, value);
     }
 
-    if (typeof value === 'string') {
-      element.textContent = value;
-    } else if (typeof value === 'object') {
-      if ('src' in element && 'src' in value) {
-        element.src = value.src;
+    if (typeof children === 'string') {
+      element.textContent = children;
+    } else if (typeof children === 'object') {
+      if ('src' in children && typeof children.src === 'string') {
+        element.setAttribute('src', children.src);
       }
 
-      for (const [childKey, childValue] of Object.entries(value)) {
+      for (const [childKey, childValue] of Object.entries(children)) {
         if (!['src'].includes(childKey)) {
           element.appendChild(createElement(childKey, childValue));
         }
       }
     }
+
     return element;
-  };
+  }
 
   const [rootKey, rootValue] = Object.entries(json)[0];
   return createElement(rootKey, rootValue);

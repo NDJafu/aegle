@@ -10,8 +10,7 @@
     "skipLibCheck": true,
     "allowJs": true,
     "forceConsistentCasingInFileNames": true,
-    "outDir": "dist/esm",
-    "isolatedModules": true
+    "outDir": "dist/esm"
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "tests"]
