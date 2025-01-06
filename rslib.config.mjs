@@ -12,10 +12,14 @@ export default defineConfig({
       },
     },
     {
-      format: 'cjs',
+      format: 'umd',
+      umdName: 'Aegle',
       output: {
         distPath: {
-          root: './dist/cjs',
+          root: './dist/umd',
+        },
+        filename: {
+          js: '[name].min.js',
         },
       },
     },
